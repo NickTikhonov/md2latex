@@ -21,7 +21,7 @@ I have a great start point: [mistune](https://github.com/lepture/mistune). It's 
 
 ## Plan
 
-![alt tag](http://url/to/img.png "Hello World")
+![alt tag](hello.jpg)
 
 My current plan of the converter includes:
 

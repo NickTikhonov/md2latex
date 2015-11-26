@@ -63,9 +63,12 @@ class LatexRenderer(mistune.Renderer):
 
     @newline
     def block_code(self, code, lang=None):
-        """Ref: http://scott.sherrillmix.com/blog/programmer/displaying-code-in-latex/"""
+        self.used_packages.append('listings')
         code = code.rstrip()
-        return '\\begin{verbatim}\n%s\n\\end{verbatim}' % code
+        lang_syntax = ''
+        if lang is not None:
+            lang_syntax = '[language=%s]' % lang.title()
+        return '\\begin{lstlisting}%s\n%s\n\\end{lstlisting}' % (lang_syntax, code)
 
     @newline
     def block_quote(self, text):
@@ -234,7 +237,8 @@ class MarkdownToLatexConverter(LatexRenderer):
         packageSyntax = {
             'enumerate': '\\usepackage{enumerate}',
             'hyperref': '\\usepackage[pdftex,colorlinks,urlcolor=blue]{hyperref}',
-            'graphicx': '\\usepackage{graphicx}'
+            'graphicx': '\\usepackage{graphicx}',
+            'listings': '\\usepackage{listings}'
         }      
 
         for package_name in set(self.used_packages):
