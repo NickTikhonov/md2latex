@@ -155,7 +155,8 @@ class LatexRenderer(mistune.Renderer):
         return r'\\'
 
     def strikethrough(self, text):
-        self.not_support('Strike-through text')
+        self.used_packages.append('ulem')
+        return '\\sout{%s}' % text
 
     def autolink(self, link, is_email=False):
         self.used_packages.append('hyperref')
@@ -263,7 +264,8 @@ class MarkdownToLatexConverter(LatexRenderer):
             'enumerate': '\\usepackage{enumerate}',
             'hyperref': '\\usepackage[pdftex,colorlinks,urlcolor=blue]{hyperref}',
             'graphicx': '\\usepackage{graphicx}',
-            'listings': '\\usepackage{listings}'
+            'listings': '\\usepackage{listings}',
+            'ulem': '\\usepackage{ulem}',
         }      
 
         for package_name in set(self.used_packages):

@@ -33,6 +33,8 @@ My current plan of the converter includes:
 - footnote
 - math[^math]
 
+~~strikethrough hello~~
+
 [^math]: since there's no inline math in markdown, it is translated as is.
 
 Now let's see how much we can do...
