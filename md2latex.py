@@ -107,14 +107,39 @@ class LatexRenderer(mistune.Renderer):
     def paragraph(self, text):
         return '%s' % text
 
+    @newline
     def table(self, header, body):
-        self.not_support('Table')
+        align_options = ''
+        table_contents = ''
+        head_cells = header[:-3].split('||')
+        for cell in head_cells:
+            value, alignment = cell.split('|')
+            align_options += "{} ".format(alignment[0])
+            table_contents += "\\textbf{%s} & " % value
+        table_contents = table_contents[:-2] + "\\\\\n"
+        table_contents += "\\hline\n"
+
+        body_rows = body[:-3].split('|||')
+        for row in body_rows:
+            for cell in row.split('||'):
+                value, alignment = cell.split('|')
+                table_contents += "{} & ".format(value)
+            table_contents = table_contents[:-2] + "\\\\\n"
+
+        return '''
+\\begin{table}[h]
+\\centering
+\\begin{tabular}{%s}
+\\hline
+%s\\hline
+\\end{tabular}
+\\end{table}''' % (align_options, table_contents)
 
     def table_row(self, content):
-        self.not_support('Table')
+        return "{}|||".format(content[:-2])
 
-    def table_cell(self, content):
-        self.not_support('Table')
+    def table_cell(self, content, header=False, align=False):
+        return "{}|{}||".format(content, align)
 
     def double_emphasis(self, text):
         """Ref: http://tex.stackexchange.com/q/14667/43978"""

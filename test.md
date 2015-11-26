@@ -39,6 +39,10 @@ Now let's see how much we can do...
 
 ---
 
+|  hello |
+|-------:|
+| hello1 |
+
 Test quote:
 
 > Steve Jobs: stay foolish, stay hungry.
