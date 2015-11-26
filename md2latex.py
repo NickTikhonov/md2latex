@@ -54,6 +54,7 @@ class LatexRenderer(mistune.Renderer):
     use_block_quote = False
     use_enumerate = False
     use_hyperref = False
+    use_graphicx = False
 
     def __init__(self):
         super(mistune.Renderer, self).__init__()
@@ -149,7 +150,14 @@ class LatexRenderer(mistune.Renderer):
         return r'\href{%s}{%s}' % (link, text)
 
     def image(self, src, title, text):
-        self.not_support('Image')
+        self.use_graphicx = True
+        return '''
+\\begin{figure}[ht]
+\\centering
+    \\includegraphics[width=1.0\\textwidth]{%s}
+    \\caption{%s}
+    \\label{%s}
+\\end{figure}''' % (src, text, title)
 
     def raw_html(self, html):
         self.not_support('Inline HTML')
@@ -231,6 +239,9 @@ class MarkdownToLatexConverter(LatexRenderer):
 
         if self.use_hyperref:
             packages.append('\\usepackage[pdftex,colorlinks,urlcolor=blue]{hyperref}')
+
+        if self.use_graphicx:
+            packages.append('\\usepackage{graphicx}')
 
         packages.append('\n\\geometry{letterpaper}')
 
