@@ -3,6 +3,8 @@
 
 *.pyc
 *.pyo
+*.pdf
+*.tex
 
 test.*
 !test.md
