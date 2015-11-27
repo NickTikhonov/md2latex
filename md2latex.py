@@ -107,24 +107,23 @@ class LatexRenderer(mistune.Renderer):
     def paragraph(self, text):
         return '%s' % text
 
+    def render_row(self, row, formatting="%s"):
+        return " & ".join(map(lambda x: formatting % x.split('|')[0], row)) \
+            + "\\\\\n"
+
+    def render_align_options(self, row):
+        return " ".join(map(lambda x: x.split('|')[1][0], row))
+
     @newline
     def table(self, header, body):
-        align_options = ''
-        table_contents = ''
         head_cells = header[:-3].split('||')
-        for cell in head_cells:
-            value, alignment = cell.split('|')
-            align_options += "{} ".format(alignment[0])
-            table_contents += "\\textbf{%s} & " % value
-        table_contents = table_contents[:-2] + "\\\\\n"
-        table_contents += "\\hline\n"
+        align_options = self.render_align_options(head_cells)
+        table_contents = self.render_row(head_cells, formatting="\\textbf{%s}") \
+            + "\\hline\n"
 
         body_rows = body[:-3].split('|||')
         for row in body_rows:
-            for cell in row.split('||'):
-                value, alignment = cell.split('|')
-                table_contents += "{} & ".format(value)
-            table_contents = table_contents[:-2] + "\\\\\n"
+            table_contents += self.render_row(row.split('||'))
 
         return '''
 \\begin{table}[h]
