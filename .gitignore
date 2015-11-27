@@ -8,4 +8,4 @@ test.*
 !test.md
 
 MANIFEST
-dist/
+build/
